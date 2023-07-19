@@ -37,7 +37,7 @@ class TodoList {
         fetch('./todo.txt')
         .then(response => response.text())
         .then(data => {
-            console.log(data)
+            // console.log(data)
             this.list = data.split("\n")
             this.height = this.list.length * 50 + 50;
         }

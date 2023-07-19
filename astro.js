@@ -15,7 +15,7 @@ class Astro{
     this.index = 0;
     this.typingSpeed = 100;
     this.moveable = true;
-
+    this.lastClick = 0;
     this.textLife = 200;
     this.greetings = [
       "Good morning, sir.",
@@ -77,13 +77,15 @@ class Astro{
 
     this.todoList.update()
 
+
     // && dist(mouseX, mouseY, this.x, this.y) < this.ur * 2
-    if ((keyIsDown(CONTROL) || mouseIsPressed) ) {
-      this.moveable = false;
-    }else{
-      this.moveable = true;
-    }
+    // if ((keyIsDown(CONTROL)) ) {
+    //   this.moveable = false;
+    // }else{
+    //   this.moveable = true;
+    // }
   }
+
 
   typeText() {
     if (this.index < this.text.length) {
@@ -126,7 +128,7 @@ class Astro{
 
       //get the angle of the mouse from astro
       let angle = map(atan2(mouseY - this.y, mouseX - this.x), -180, 180, 0, 360) 
-      print(angle)
+      // print(angle)
       // rotate(PI / 2)
       for(let i = 0; i < 360; i += 90){
         noFill()

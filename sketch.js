@@ -49,6 +49,13 @@ function draw() {
 
 function mouseClicked(){
   astro.clicked = true;
+  astro.lastClick = millis();
+  //check if mouse is double clicked
+  if (mouseClicked && millis() - astro.lastClick < 500) {
+    doubleClicked();
+    print("double clicked")
+  }
+
 }
 
 function getWeather(){
@@ -57,7 +64,7 @@ function getWeather(){
   .then(data => {
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     let dt = new Date();
-    console.log()
+    // console.log()
 
     astro.text += "\nToday is : " + weekdays[dt.getDay()] + ". \nThe weather is : " + data.current.condition.text + ". \nTemperature : " + data.current.temp_c + "°C" 
     + ".\n You have " + astro.todoList.list.length + " things to do today."
@@ -65,6 +72,11 @@ function getWeather(){
     speech.speak(astro.text); // say something
   }
   );
+}
+
+
+function doubleClicked(){
+  astro.moveable = !astro.moveable;
 }
 
 // async function getWeather() {
