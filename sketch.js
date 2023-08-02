@@ -49,12 +49,22 @@ function draw() {
 
 function mouseClicked(){
   astro.clicked = true;
-  astro.lastClick = millis();
-  //check if mouse is double clicked
-  if (mouseClicked && millis() - astro.lastClick < 500) {
-    doubleClicked();
-    print("double clicked")
-  }
+  // astro.lastClick = millis();
+  // //check if mouse is double clicked
+  // if (mouseClicked && millis() - astro.lastClick < 500) {
+  //   doubleClicked();
+  //   print("double clicked")
+  // }
+
+  // astro.clickCount++;
+
+  // setTimeout(function() {
+  //   if (astro.clickCount === 2) {
+  //     // Double click action
+  //     console.log('Double click detected!');
+  //   }
+  //   astro.clickCount = 0; // Reset the click count after the delay
+  // }, 200);
 
 }
 

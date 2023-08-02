@@ -1,2 +1,3 @@
-Port this project to node
-Get keyboard input
+Bored state
+Options text
+Add new Option

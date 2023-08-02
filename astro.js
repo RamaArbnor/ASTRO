@@ -15,7 +15,8 @@ class Astro{
     this.index = 0;
     this.typingSpeed = 100;
     this.moveable = true;
-    this.lastClick = 0;
+    this.bored = true;
+
     this.textLife = 200;
     this.greetings = [
       "Good morning, sir.",
@@ -38,16 +39,27 @@ class Astro{
 
     this.todoList = new TodoList();
 
+    this.selectedOption = 0;
+    // 0 - none, 1 - weather, 2 - todo list, 3 - calendar
+
+    this.showTodoList = true;
+    setInterval(() => {
+      this.boredomMovement()
+    }, 10000);
   }
-  
+
   show(){
+    if(this.showTodoList){
+      this.todoList.show()
+    }
     fill(this.color)
     circle(this.x, this.y, this.r)
     this.typeText()
     this.displayText()
-    this.todoList.show()
+    
 
     this.utils();
+
 
   }
   
@@ -59,6 +71,12 @@ class Astro{
       this.vx = (mouseX - this.x) * 0.1;
       this.vy = (mouseY - this.y) * 0.1;
       
+    }
+
+    if(this.bored){ 
+      //call a function every 5 seconds
+      // setInterval(this.boredomMovement(), 5000);
+      // this.boredomMovement();
     }
 
     if(this.clicked && this.r < 15){
@@ -75,8 +93,9 @@ class Astro{
       this.textLife -= 1;
     }
 
-    this.todoList.update()
-
+    if(this.showTodoList){
+      this.todoList.update()
+    }
 
     // && dist(mouseX, mouseY, this.x, this.y) < this.ur * 2
     // if ((keyIsDown(CONTROL)) ) {
@@ -120,6 +139,17 @@ class Astro{
     
   }
 
+  boredomMovement(){
+    if(this.bored){
+      let newX = random(0, width/3);
+      let newY = random(0, height/3);
+      this.vx = (newX - this.x) * 0.1;
+      this.vy = (newY - this.y) * 0.1;
+      console.log(newX, newY)
+    }
+
+  }
+
   utils(){
 
     if(!this.moveable){
@@ -132,20 +162,51 @@ class Astro{
       // rotate(PI / 2)
       for(let i = 0; i < 360; i += 90){
         noFill()
-        if(angle > i && angle < i + 90 && dist(mouseX, mouseY, this.x, this.y) > this.ur * 2 ) 
+        if(angle > i && angle < i + 90 && dist(mouseX, mouseY, this.x, this.y) > this.ur) 
           stroke(255, 255, 255, 100)
         else{
           stroke(250, 255, 255) 
         }
+        let textString = ""
         strokeWeight(1)
-        text("Text", this.ur * cos(i + 45) + this.x, this.ur * sin(i + 45) + this.y) 
+        switch(i){
+          case i >= 0 && i < 90:
+            textString = "Todo List"
+            break;
+          case i >= 90 && i < 180:
+            textString = "Weather"
+            break;
+          case i >= 180 && i < 270:
+            textString = "Calendar"
+            break; 
+          case i >= 270 && i < 360:
+            textString = "Settings"
+            break;
+        }
+
+        text(textString, this.ur * cos(i + 45) + this.x, this.ur * sin(i + 45) + this.y) 
 
         strokeWeight(10)
         arc(this.x, this.y, this.ur, this.ur, i, i + 90)
 
       }
 
-      //draw a letter on each arc
+      if(angle > 0 && angle < 90 && dist(mouseX, mouseY, this.x, this.y) > this.ur && this.clicked) {
+        print("option 0")
+        this.showTodoList = !this.showTodoList;
+        this.selectedOption = 0;
+        this.moveable = true;
+      }else if(angle > 90 && angle < 180 && dist(mouseX, mouseY, this.x, this.y) > this.ur ) {
+        print("option 1")
+        this.selectedOption = 1;
+      }else if(angle > 180 && angle < 270 && dist(mouseX, mouseY, this.x, this.y) > this.ur ) {
+        print("option 2")
+        this.selectedOption = 2;
+      }else if(angle > 270 && angle < 360 && dist(mouseX, mouseY, this.x, this.y) > this.ur ) {
+        print("option 3")
+        this.selectedOption = 3;
+      }
+
       
 
     }
