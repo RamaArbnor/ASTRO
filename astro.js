@@ -37,7 +37,9 @@ class Astro{
       "Ready to take the world by storm ?",
     ];
 
-    this.todoList = new TodoList();
+    this.todoList = new TodoList('Todo List');
+
+    this.calendar = new Calendar( this.todoList.x, this.todoList.y + this.todoList.height + 100, 'Calendar',);
 
     this.selectedOption = 0;
     // 0 - none, 1 - weather, 2 - todo list, 3 - calendar
@@ -51,6 +53,7 @@ class Astro{
   show(){
     if(this.showTodoList){
       this.todoList.show()
+      this.calendar.show()
     }
     fill(this.color)
     circle(this.x, this.y, this.r)
@@ -84,6 +87,7 @@ class Astro{
       this.pulse()
     }else if(this.r > 10){
       this.clicked = false;
+      
       this.r -= 1;
       this.color = color(133, 255, 251);
 
@@ -194,6 +198,7 @@ class Astro{
       if(angle > 0 && angle < 90 && dist(mouseX, mouseY, this.x, this.y) > this.ur && this.clicked) {
         print("option 0")
         this.showTodoList = !this.showTodoList;
+        // enableOptions = !enableOptions;
         this.selectedOption = 0;
         this.moveable = true;
       }else if(angle > 90 && angle < 180 && dist(mouseX, mouseY, this.x, this.y) > this.ur ) {

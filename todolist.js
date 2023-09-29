@@ -1,21 +1,21 @@
 class TodoList {
   
-    constructor(){
+    constructor(name){
         this.y = 100;
         this.list = []
         this.width = 200;
-        this.x = displayWidth - this.width - 100;
-
+        
         this.height = this.list.length * 50 + 100;
-
+        
         //read from a file and for each row add to list
         this.getTodoList();
-
+        this.x = displayWidth - this.width - 100;
+        this.name = name;
 
     }
     
     show(){
-        text("Todo List", this.x, this.y - 50, this.width, this.height)
+        text(this.name, this.x, this.y - 50, this.width, this.height)
         fill(255, 255, 255, 100)
         rect(this.x, this.y, this.width, this.height)
 

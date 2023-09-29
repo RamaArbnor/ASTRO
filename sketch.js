@@ -1,5 +1,6 @@
 let nodes = [];
 let astro;
+let enableOptions;
 
 function setup() {
   angleMode(DEGREES);
@@ -18,18 +19,38 @@ function setup() {
   function startSpeaking() {
     background(0,255,0, 50);
   }
-  
   function voiceReady() {
     // console.log(speech.voices);
   }
 
+  enableOptions = true;
 
+  if(enableOptions){
+    let button = createButton('Get Weather');
+    let button2 = createButton('Get Events');
+    let button3 = createButton('Get Todo List');
+    let button4 = createButton('Get News');
+    let button5 = createButton('Get Time');
+    button.position(displayWidth - 5 * 150, displayHeight - 100);
+    button2.position(displayWidth - 4 * 150, displayHeight - 100);
+    button3.position(displayWidth - 3 * 150, displayHeight - 100);
+    button4.position(displayWidth - 2 * 150, displayHeight - 100);
+    button5.position(displayWidth - 1 * 150, displayHeight - 100);
+
+    button.addClass('button');
+    button2.addClass('button');
+    button3.addClass('button');
+    button4.addClass('button');
+    button5.addClass('button');
+  }
 
 
 }
 
 function draw() {
   background(51);
+
+
 
   astro.update()
   astro.show()
@@ -40,10 +61,9 @@ function draw() {
     nodes[i].show();
 
   }
-  
-  // print(sin(nodes[0].angle) * 10)
-  
-  // noLoop()
+
+
+
   
 }
 
@@ -105,3 +125,43 @@ function doubleClicked(){
 //     }, 1000); // Adjust the delay as needed
 //   };
 // }
+
+function getEvents(){
+  // api = AIzaSyBU0uZb4K3IXSm6SQGqicG8HgkIaW7Rl7g
+  gapi.load('client:auth2', () => {
+    gapi.client.init({
+      apiKey: '', // Your API key or OAuth 2.0 credentials
+      clientId: '',
+      discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+      scope: 'https://www.googleapis.com/auth/calendar.readonly',
+    }).then(() => {
+      // Check if the user is already signed in, or sign them in.
+      if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        gapi.auth2.getAuthInstance().signIn();
+      }
+      
+      // Get today's date in ISO format (e.g., "2023-09-20").
+      const today = new Date().toISOString().split('T')[0];
+  
+      // Fetch events for today.
+      gapi.client.calendar.events.list({
+        calendarId: 'primary', // 'primary' represents the user's primary calendar
+        timeMin: today + 'T00:00:00Z',
+        timeMax: today + 'T23:59:59Z',
+        singleEvents: true,
+        orderBy: 'startTime',
+      }).then((response) => {
+        const events = response.result.items;
+        if (events.length > 0) {
+          console.log('Events for today:');
+          events.forEach((event) => {
+            console.log(`${event.summary} - ${event.start.dateTime}`);
+          });
+        } else {
+          console.log('No events for today.');
+        }
+      });
+    });
+  });
+  
+}
